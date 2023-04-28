@@ -24,6 +24,27 @@ run {
     some b: Board | wellformed[b]
 } for exactly 1 Board
 
+pred Bturn[b: Board] {
+    -- same number of X and O on board
+    #{row, col: Int | b.board[row][col] = B} = 
+    #{row, col: Int | b.board[row][col] = W}
+}
+
+pred Wturn[b: Board] {
+    #{row, col: Int | b.board[row][col] = B} = 
+    add[#{row, col: Int | b.board[row][col] = W}, 1]
+}
+
+pred balanced[b: Board] {
+    Bturn[b] or Wturn[b]
+}
+
+//Constraint to ensure next Board has one one more piece than last board 
+// pred nextBoard[b:Board]{
+//     all b: Board|{
+
+//     }
+// }
 //Constraints to Determine the Player Move
 
 
@@ -68,4 +89,30 @@ pred winDiagnoal[b: Board, p: Player] {
         b.position[row + 3][col + 3] = p
         b.position[row + 4][col + 4] = p
     }
+}
+
+pred winner[b: Board, p: Player] {
+    winRow[b, p]
+    or 
+    winCol[b, p]
+    or 
+    winDiagnoal[b,p]
+}
+
+pred starting[b: Board] {
+    all row, col: Int | 
+        no b.board[row][col]
+}
+
+pred move[pre: Board, row: Int, col: Int, p: Player, post: Board] {
+  -- guard:
+  no pre.board[row][col]   -- nobody's moved there yet
+  p = B implies BTurn[pre] -- appropriate turn
+  p = W implies WTurn[pre]  
+  
+  -- action:
+  post.board[row][col] = p
+  all row2: Int, col2: Int | (row!=row2 and col!=col2) implies {        
+        post.board[row2][col2] = pre.board[row2][col2]     
+  }  
 }
