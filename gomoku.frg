@@ -2,8 +2,8 @@
 
 // Definitions
 one sig Board {
-    position : pfunc Int -> Int -> Player, 
-    next: lone Board
+    position : pfunc Int -> Int -> Player
+    // next: lone Board
 }
     
 
@@ -20,19 +20,20 @@ pred wellformed[b: Board] {
     }
 }
 
-run {
-    some b: Board | wellformed[b]
-} for exactly 1 Board
+// run {
+//     some b: Board | wellformed[b]
+
+// } for exactly 1 Board
 
 pred Bturn[b: Board] {
     -- same number of X and O on board
-    #{row, col: Int | b.board[row][col] = B} = 
-    #{row, col: Int | b.board[row][col] = W}
+    #{row, col: Int | b.position[row][col] = Black} = 
+    #{row, col: Int | b.position[row][col] = White}
 }
 
 pred Wturn[b: Board] {
-    #{row, col: Int | b.board[row][col] = B} = 
-    add[#{row, col: Int | b.board[row][col] = W}, 1]
+    #{row, col: Int | b.position[row][col] = Black} = 
+    add[#{row, col: Int | b.position[row][col] = White}, 1]
 }
 
 pred balanced[b: Board] {
@@ -101,18 +102,20 @@ pred winner[b: Board, p: Player] {
 
 pred starting[b: Board] {
     all row, col: Int | 
-        no b.board[row][col]
+        no b.position[row][col]
 }
 
 pred move[pre: Board, row: Int, col: Int, p: Player, post: Board] {
   -- guard:
-  no pre.board[row][col]   -- nobody's moved there yet
-  p = B implies BTurn[pre] -- appropriate turn
-  p = W implies WTurn[pre]  
+  no pre.position[row][col]   -- nobody's moved there yet
+  p = Black implies Bturn[pre] -- appropriate turn
+  p = White implies Wturn[pre]  
   
   -- action:
-  post.board[row][col] = p
+  post.position[row][col] = p
   all row2: Int, col2: Int | (row!=row2 and col!=col2) implies {        
-        post.board[row2][col2] = pre.board[row2][col2]     
+        post.position[row2][col2] = pre.position[row2][col2]     
   }  
 }
+
+run { all b: Board | wellformed[b] and balanced[b]} 
