@@ -113,7 +113,9 @@ pred winner[b: Board, p: Player] {
     or 
     winCol[b, p]
     or 
-    winDiagnoal[b,p]
+    winDiagnoalIncr[b,p]
+    or 
+    winDiagonalDecr[b, p]
 }
 
 pred starting[b: Board] {
