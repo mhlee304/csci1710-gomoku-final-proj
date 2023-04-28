@@ -2,8 +2,10 @@
 
 // Definitions
 one sig Board {
-    position : pfunc Int -> Int -> Player
-    // next: lone Board
+    position : pfunc Int -> Int -> Player,
+    next: lone Board
+    // prev_player: lone Player
+    
 }
     
 
@@ -78,10 +80,10 @@ pred winRow[b: Board, p: Player] {
     }
 }
 
-pred winDiagnoal[b: Board, p: Player] {
+pred winDiagnoalIncr[b: Board, p: Player] {
     some row, col: Int | {
-        row >= 0
-        row <= 10
+        row >= 4
+        row <= 14
         col >= 0
         col <= 10
         b.position[row + 0][col + 0] = p
@@ -89,6 +91,20 @@ pred winDiagnoal[b: Board, p: Player] {
         b.position[row + 2][col + 2] = p
         b.position[row + 3][col + 3] = p
         b.position[row + 4][col + 4] = p
+    }
+}
+
+pred winDiagonalDecr[b: Board, p: Player] {
+    some row, col: Int | {
+        row >= 0
+        row <= 10
+        col >= 0
+        col <= 10
+        b.position[row - 0][col - 0] = p
+        b.position[row - 1][col - 1] = p
+        b.position[row - 2][col - 2] = p
+        b.position[row - 3][col - 3] = p
+        b.position[row - 4][col - 4] = p
     }
 }
 
