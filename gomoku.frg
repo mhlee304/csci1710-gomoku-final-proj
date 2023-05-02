@@ -1,9 +1,14 @@
 #lang forge/bsl
 
 // Definitions
+one sig Game {
+    initialState: one Board,
+    next: pfunc Board -> Board
+}
+
 one sig Board {
-    position : pfunc Int -> Int -> Player,
-    next: lone Board
+    position : pfunc Int -> Int -> Player
+    // next: lone Board
     // prev_player: lone Player
     
 }
@@ -17,7 +22,7 @@ one sig Black, White extends Player {}
 //Wellformed Board
 pred wellformed[b: Board] {
     all row, col: Int | {
-        (row < 0 or row  >15 or col < 0 or col > 15) implies 
+        (row < 0 or row  > 15 or col < 0 or col > 15) implies 
         no b.position[row][col]
     }
 }
@@ -136,4 +141,15 @@ pred move[pre: Board, row: Int, col: Int, p: Player, post: Board] {
   }  
 }
 
-run { all b: Board | wellformed[b] and balanced[b]} 
+// pred testingBoardVisualization[b:Board]{
+//     b.position[4][4] = Black
+//     b.position[3][4] = Black
+//     b.position[2][4] = Black
+
+//     b.position[1][3] = White
+//     b.position[1][1] = White
+//     b.position[1][2] = White
+// }
+
+run { all b: Board | testingBoardVisualization[b]} for exactly 1 Board
+// run { all b: Board | wellformed[b] and balanced[b]}
