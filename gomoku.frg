@@ -1,18 +1,11 @@
 #lang forge/bsl
 
-// Definitions
-// one sig Game {
-//     initialState: one Board,
-//     next: pfunc Board -> Board
-// }
-
 sig Board {
     position : pfunc Int -> Int -> Player,
     next: lone Board
     // prev_player: lone Player
     
 }
-    
 
 abstract sig Player {}
 one sig Black, White extends Player {}
@@ -42,21 +35,11 @@ pred Bturn[pre:Board] {
 }
 
 
-
 pred balanced{
     all b: Board{
     Bturn[b] or Wturn[b]
     }
 }
-
-//Constraint to ensure next Board has one one more piece than last board 
-// pred nextBoard[b:Board]{
-//     all b: Board|{
-
-//     }
-// }
-//Constraints to Determine the Player Move
-
 
 //Constraints to a Winner
 pred winCol[b: Board, p: Player] {
@@ -130,7 +113,7 @@ pred starting[b: Board] {
        no b.position[row][col] 
     }
     
-    //akk tge boards don't have the first board in the next
+    //aka all boards don't have the first board in the next
     all non_start:Board | {
         non_start.next != b
     }
@@ -138,10 +121,6 @@ pred starting[b: Board] {
     //white pebbles and black pebbles should be 0
     #{row, col: Int | b.position[row][col] = White} = 0
     #{row, col: Int | b.position[row][col] = Black} = 0
-
-    // #{row, col: Int | b.next.position[row][col] = White} = 1
-    // #{row, col: Int | b.next.position[row][col] = Black} = 0
-
 
 }
 
@@ -153,8 +132,6 @@ pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
   row <= 14 and row >= 0
   col <= 14  and col >= 0 
 
-  //case 1: pre have the same black and white; post has white + 1
-  //case 2: pre have white = black + 1. post has white = black
   //Pre conditions
   p = Black implies Bturn[pre] -- appropriate turn
   p = White implies Wturn[pre]  
@@ -185,13 +162,8 @@ pred ending[final: Board] {
 
 pred TransitionStates{
     some init,final: Board{
-        //possible error 
-        // init.position = none 
-        // init.next != none 
-
         starting[init]
-        // final.position != none 
-        ending[final]
+        // ending[final]
 
         #{row, col: Int | init.next.position[row][col] = White} = 1
         #{row, col: Int | init.next.position[row][col] = Black} = 0
@@ -211,4 +183,4 @@ run {
     wellformed
     TransitionStates 
     balanced 
-    } for exactly 5 Board, 5 Int for {next is linear}
+    } for exactly 16 Board, 5 Int for {next is linear}
