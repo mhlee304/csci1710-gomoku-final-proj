@@ -1,99 +1,42 @@
-// INSTRUCTIONS: Since this script loads external elements, "Execute" may need to be run twice
-// to guarantee that visualization is showing properly.
+div.replaceChildren()
+div.style.position = 'relative';
 
-// Setup for importing necessary scripts/plugins
-function loadSources() {
-  var styleSheet = document.createElement("link");
-  styleSheet.setAttribute("rel", "stylesheet");
-  styleSheet.setAttribute(
-    "href",
-    "https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css"
-  );
-  styleSheet.setAttribute(
-    "integrity",
-    "sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU"
-  );
-  styleSheet.setAttribute("crossorigin", "anonymous");
-  document.head.appendChild(styleSheet);
+white_url = 'https://em-content.zobj.net/thumbs/160/apple/81/medium-white-circle_26aa.png'
+black_url = 'https://em-content.zobj.net/thumbs/160/apple/81/medium-black-circle_26ab.png'
 
-  var jQueryImport = document.createElement("script");
-  jQueryImport.setAttribute(
-    "src",
-    "https://code.jquery.com/jquery-3.5.1.min.js"
-  );
-  jQueryImport.setAttribute(
-    "integrity",
-    "sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
-  );
-  jQueryImport.setAttribute("crossorigin", "anonymous");
-  document.head.appendChild(jQueryImport);
+// Create the first img element
+const img1 = document.createElement('img');
+img1.src = 'https://www.bytedance.ai/pic/board.jpg';
+img1.style.position = 'absolute';
+img1.style.top = '0';
+img1.style.left = '0';
+img1.style.width = '500px';  // Set the width of img1 to 100 pixels
+img1.style.height = '500px';
+div.appendChild(img1);
 
-  var chessboardImport = document.createElement("script");
-  chessboardImport.setAttribute(
-    "src",
-    "https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
-  );
-  chessboardImport.setAttribute(
-    "integrity",
-    "sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
-  );
-  chessboardImport.setAttribute("crossorigin", "anonymous");
-  document.head.appendChild(chessboardImport);
-}
+// Create the second img element
+const img2 = document.createElement('img');
+img2.src = black_url;
+img2.style.position = 'absolute';
+img2.style.width = '28px';  // Set the width of img2 to 100 pixels
+img2.style.height = '28px'; // Set the height of img2 to 100 pixels
 
-function boardFENString(board) {
-  var boardArr = [];
-  for (r = 0; r < 8; r++) {
-    var thisRank = [];
-    for (f = 0; f < 8; f++) {
-      thisRank.push("1");
-    }
-    boardArr.push(thisRank);
-  }
+const result = Forge.run(Board.position);
 
-  const positions = board.join(position).tuples();
-  for (idx = 0; idx < positions.length; idx++) {
-    const atms = positions[idx]._atoms;
-    const thisFile = atms[0].toString();
-    const thisRank = atms[1].toString();
-    if (0 <= thisFile && thisFile <= 7 && 0 <= thisRank && thisRank <= 7) {
-      boardArr[thisFile][thisRank] = "q";
-    }
-  }
 
-  var boardString = "";
-  for (r = 7; r >= 0; r--) {
-    for (f = 0; f < 8; f++) {
-      boardString += boardArr[r][f];
-    }
-    boardString += "/";
-  }
-  console.log(boardString.slice(0, -1));
-  return boardString.slice(0, -1);
-}
 
-function loadChessboard() {
-  //setColors();
-  let board = Board;
-  var config = {
-    pieceTheme:
-      "https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png",
-    position: boardFENString(board),
-  };
-  var chessboard = document.createElement("div");
-  var boardName = "board";
-  chessboard.setAttribute("id", boardName);
-  chessboard.setAttribute("style", "width: 300px; margin: 10px");
-  div.appendChild(chessboard);
-  var board1 = Chessboard(boardName, config);
-}
+// // Loop to create multiple img2 elements at specific coordinates
+// for (let i = 0; i < 14; i++) {
+//     for (let j = 0; j < 14; j++) {
+//         const img2Copy = img2.cloneNode(true); // Create a copy of img2 element
+//         img2Copy.style.top = `${24 + (i * 32.5)}px`; // Set the top property based on index
+//         img2Copy.style.left = `${24 + (j * 32.5)}px`; // Set the left property based on index
+//         div.appendChild(img2Copy); // Add the img2 element to the div element     
+//     }
+// }
 
-div.innerHTML = "";
-div.style.overflow = "scroll";
-if (!document.head.innerHTML.includes("chessboardjs@1.0.0")) {
-  alert(
-    'Since this script loads external elements, "Execute" may need to be run twice or thrice (!!) to guarantee that visualization is showing properly.'
-  );
-}
-loadSources();
-loadChessboard();
+
+
+
+
+

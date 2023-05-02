@@ -183,4 +183,4 @@ run {
     wellformed
     TransitionStates 
     balanced 
-    } for exactly 16 Board, 5 Int for {next is linear}
+    } for exactly 2 Board, 5 Int for {next is linear}
