@@ -29,47 +29,23 @@ pred wellformed{
     }
 }
 
-// run {
-//     some b: Board | wellformed[b]
-
-// } for exactly 1 Board
-
-pred Bturn[pre:Board, post: Board] {
-    -- same number of X and O on board
-    #{row, col: Int | post.position[row][col] = Black} = 
-    #{row, col: Int | post.position[row][col] = White}
-
-    add[#{row, col: Int | pre.position[row][col] = Black}, 1] = 
+pred Wturn[pre:Board] {
+    #{row, col: Int | pre.position[row][col] = Black} = 
     #{row, col: Int | pre.position[row][col] = White}
-
-    #{row, col: Int | pre.position[row][col] = White} = #{row, col: Int | post.position[row][col] = White}
-
-    add[#{row, col: Int | pre.position[row][col] = Black}, 1] = 
-    #{row, col: Int | post.position[row][col] = Black}
-
-
-
 }
 
-pred Wturn[pre:Board, post: Board] {
-    add[#{row, col: Int | post.position[row][col] = Black},1] = 
-    #{row, col: Int | post.position[row][col] = White}
 
-    // #{row, col: Int | pre.position[row][col] = Black} = 
-    // #{row, col: Int | pre.position[row][col] = White}
-
-    // add[#{row, col: Int | pre.position[row][col] = White}, 1] = #{row, col: Int | post.position[row][col] = White}
-
-    // #{row, col: Int | pre.position[row][col] = Black} = 
-    // #{row, col: Int | post.position[row][col] = Black}
-
-
-
+pred Bturn[pre:Board] {
+    -- same number of X and O on board
+    #{row, col: Int | pre.position[row][col] = White} = 
+    add[#{row, col: Int | pre.position[row][col] = Black}, 1]
 }
+
+
 
 pred balanced{
     all b: Board{
-    Bturn[b, b.next] or Wturn[b, b.next]
+    Bturn[b] or Wturn[b]
     }
 }
 
@@ -162,27 +138,36 @@ pred starting[b: Board] {
     //white pebbles and black pebbles should be 0
     #{row, col: Int | b.position[row][col] = White} = 0
     #{row, col: Int | b.position[row][col] = Black} = 0
+
+    // #{row, col: Int | b.next.position[row][col] = White} = 1
+    // #{row, col: Int | b.next.position[row][col] = Black} = 0
+
+
 }
 
-pred move[pre: Board, row: Int, col: Int, p: Player, post: Board] {
+pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
   -- guard:
 //   #Int = 14 
-  no pre.position[row][col]   -- nobody's moved there yet
-
-  //case 1: pre have the same black and white; post has white + 1
-  //case 2: pre have white = black + 1. post has white = black
-  p = Black implies Bturn[pre, post] -- appropriate turn
-  p = White implies Wturn[pre, post]  
+  no pre.position[row][col] -- nobody's moved there yet
+  
   row <= 14 and row >= 0
   col <= 14  and col >= 0 
 
+  //case 1: pre have the same black and white; post has white + 1
+  //case 2: pre have white = black + 1. post has white = black
+  //Pre conditions
+  p = Black implies Bturn[pre] -- appropriate turn
+  p = White implies Wturn[pre]  
+
+
   all p:Player | not winner[pre,p]
   
-  -- action:
+  -- action:(what does the post-state then look like?)
   post.position[row][col] = p
-  all row2: Int, col2: Int | (row!=row2 and col!=col2) implies {        
+
+  all row2: Int, col2: Int | (row!=row2 or col!=col2) implies {                
         post.position[row2][col2] = pre.position[row2][col2]     
-  }  
+    } 
 }
 
 pred doNothing[pre: Board, post: Board]{
@@ -191,12 +176,10 @@ pred doNothing[pre: Board, post: Board]{
     all row2: Int, col2: Int|{
         post.position[row2][col2] = pre.position[row2][col2]
     }
-
-    
 }
 
 pred ending[final: Board] {
-    winner[final, Black] or winner[final, White]
+    // winner[final, Black] or winner[final, White] //commented for the time being
     final.next = none 
 }
 
@@ -210,28 +193,18 @@ pred TransitionStates{
         // final.position != none 
         ending[final]
 
+        #{row, col: Int | init.next.position[row][col] = White} = 1
+        #{row, col: Int | init.next.position[row][col] = Black} = 0
+
         all b: Board | some b.next implies {
-            some row, col: Int, p: Player|
-            {
-                move[b, row, col, p, b.next] 
+            some row, col: Int, p: Player | {
+                move[b, b.next, row, col, p]            
             }
-            // or
-            // {
-            //     doNothing[b, b.next]
-            // } 
+            or
+                doNothing[b, b.next]
         }
     }
 }
-
-// pred testingBoardVisualization[b:Board]{
-//     b.position[4][4] = Black
-//     b.position[3][4] = Black
-//     b.position[2][4] = Black
-
-//     b.position[1][3] = White
-//     b.position[1][1] = White
-//     b.position[1][2] = White
-// }
 
 // run { all b: Board | testingBoardVisualization[b]} for exactly 1 Board
 run { 
