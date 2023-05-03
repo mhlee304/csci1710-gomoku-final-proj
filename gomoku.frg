@@ -16,7 +16,7 @@ one sig Black, White extends Player {}
 pred wellformed{
     all b:Board|{
         all row, col: Int | {
-            (row < 0 or row  > 14 or col < 0 or col > 14) implies 
+            (row < 0 or row  > 13 or col < 0 or col > 13) implies 
             no b.position[row][col]
         }
     }
@@ -45,9 +45,9 @@ pred balanced{
 pred winCol[b: Board, p: Player] {
     some row, col: Int | {
         row >= 0
-        row <= 10
+        row <= 9
         col >= 0
-        col <= 14
+        col <= 13
         b.position[add[row,0]][col] = p
         b.position[add[row,1]][col] = p
         b.position[add[row,2]][col] = p
@@ -59,9 +59,9 @@ pred winCol[b: Board, p: Player] {
 pred winRow[b: Board, p: Player] {
     some row, col: Int | {
         row >= 0
-        row <= 14
+        row <= 13
         col >= 0
-        col <= 10
+        col <= 9
         b.position[row][add[col,0]] = p
         b.position[row][add[col,1]] = p
         b.position[row][add[col,2]] = p
@@ -73,9 +73,9 @@ pred winRow[b: Board, p: Player] {
 pred winDiagnoalIncr[b: Board, p: Player] {
     some row, col: Int | {
         row >= 4
-        row <= 14
+        row <= 13
         col >= 0
-        col <= 10
+        col <= 9
         b.position[add[row,0]][add[col,0]] = p
         b.position[add[row,1]][add[col,1]] = p
         b.position[add[row,2]][add[col,2]] = p
@@ -87,9 +87,9 @@ pred winDiagnoalIncr[b: Board, p: Player] {
 pred winDiagonalDecr[b: Board, p: Player] {
     some row, col: Int | {
         row >= 0
-        row <= 10
+        row <= 9
         col >= 0
-        col <= 10
+        col <= 9
         b.position[subtract[row,0]][subtract[col,0]] = p
         b.position[subtract[row,1]][subtract[col,1]] = p
         b.position[subtract[row,2]][subtract[col,2]] = p
@@ -129,8 +129,8 @@ pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
 //   #Int = 14 
   no pre.position[row][col] -- nobody's moved there yet
   
-  row <= 14 and row >= 0
-  col <= 14  and col >= 0 
+  row <= 13 and row >= 0
+  col <= 13  and col >= 0 
 
   //Pre conditions
   p = Black implies Bturn[pre] -- appropriate turn
@@ -162,11 +162,14 @@ pred ending[final: Board] {
 
 pred TransitionStates{
     some init,final: Board{
-        starting[init]
+        // starting[init]
         // ending[final]
 
-        #{row, col: Int | init.next.position[row][col] = White} = 1
-        #{row, col: Int | init.next.position[row][col] = Black} = 0
+        #{row, col: Int | init.next.position[row][col] = White} = 5
+        #{row, col: Int | init.next.position[row][col] = Black} = 5
+
+        // #{row, col: Int | init.next.position[row][col] = White} = 1
+        // #{row, col: Int | init.next.position[row][col] = Black} = 0
 
         all b: Board | some b.next implies {
             some row, col: Int, p: Player | {
