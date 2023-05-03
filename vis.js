@@ -5,38 +5,46 @@ white_url = 'https://em-content.zobj.net/thumbs/160/apple/81/medium-white-circle
 black_url = 'https://em-content.zobj.net/thumbs/160/apple/81/medium-black-circle_26ab.png'
 
 // Create the first img element
-const img1 = document.createElement('img');
-img1.src = 'https://www.bytedance.ai/pic/board.jpg';
-img1.style.position = 'absolute';
-img1.style.top = '0';
-img1.style.left = '0';
-img1.style.width = '500px';  // Set the width of img1 to 100 pixels
-img1.style.height = '500px';
-div.appendChild(img1);
+const board = document.createElement('img');
+board.src = 'https://www.bytedance.ai/pic/board.jpg';
+board.style.position = 'absolute';
+board.style.top = '0';
+board.style.left = '0';
+board.style.width = '500px';  // Set the width of img1 to 100 pixels
+board.style.height = '500px';
+div.appendChild(board);
+
 
 // Create the second img element
-const img2 = document.createElement('img');
-img2.src = black_url;
-img2.style.position = 'absolute';
-img2.style.width = '28px';  // Set the width of img2 to 100 pixels
-img2.style.height = '28px'; // Set the height of img2 to 100 pixels
+const white = document.createElement('img');
+white.src = white_url;
+white.style.position = 'absolute';
+white.style.width = '28px';  // Set the width of img2 to 100 pixels
+white.style.height = '28px'; // Set the height of img2 to 100 pixels
 
-const result = Forge.run(Board.position);
+const black = document.createElement('img');
+black.src = black_url;
+black.style.position = 'absolute';
+black.style.width = '28px';  // Set the width of img2 to 100 pixels
+black.style.height = '28px'; // Set the height of img2 to 100 pixels
 
+function makeBoard(stateAtom) {
+    for (i = 0; i <= 14; i++) {
+        for (j = 0; j <= 14; j++) {
+            const val = stateAtom.position[i][j].toString().substring(0,1)
+            if (val == "B") {
+                const black_copy = black.cloneNode(true);
+                black_copy.style.top = `${24 + (i * 32.5)}px`; // Set the top property based on index
+                black_copy.style.left = `${24 + (j * 32.5)}px`; // Set the left property based on index
+                div.appendChild(black_copy);
+            } else if (val == "W") {
+                const white_copy = white.cloneNode(true);
+                white_copy.style.top = `${24 + (i * 32.5)}px`; // Set the top property based on index
+                white_copy.style.left = `${24 + (j * 32.5)}px`; // Set the left property based on index
+                div.appendChild(white_copy);
+            }
+        }
+    }
+}
 
-
-// // Loop to create multiple img2 elements at specific coordinates
-// for (let i = 0; i < 14; i++) {
-//     for (let j = 0; j < 14; j++) {
-//         const img2Copy = img2.cloneNode(true); // Create a copy of img2 element
-//         img2Copy.style.top = `${24 + (i * 32.5)}px`; // Set the top property based on index
-//         img2Copy.style.left = `${24 + (j * 32.5)}px`; // Set the left property based on index
-//         div.appendChild(img2Copy); // Add the img2 element to the div element     
-//     }
-// }
-
-
-
-
-
-
+makeBoard(Board.atom("Board0"))
