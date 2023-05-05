@@ -118,9 +118,12 @@ pred starting[b: Board] {
     #{row, col: Int | b.position[row][col] = White} = 24
     #{row, col: Int | b.position[row][col] = Black} = 24
 
+    //SETUP
+    not_five_row[b, White]
+    not_five_row[b,Black]
+
     //Defense
-    five_row[b, White]
-    // defensive_plays[b]
+    
 
 
     //Attack
@@ -138,19 +141,17 @@ pred defensive_plays[b:Board] {
     //3 in a row of opponent's stone --> player should place their stone on the end of the row
 }
 
-pred five_row[b:Board, p:Player] {
-    five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
-    // five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
+pred not_five_row[b:Board, p:Player] {
+    not five_vertical[b, p] 
+    not five_horizontal[b,p]
+    not five_decr_diagonal[b,p]
+    not five_incr_diagonal[b,p]
 }
 
 
 
 pred five_vertical[b:Board, p:Player] {
     some row,col:Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 13
         b.position[add[row,0]][col] = p
         b.position[add[row,1]][col] = p
         b.position[add[row,2]][col] = p
@@ -161,10 +162,6 @@ pred five_vertical[b:Board, p:Player] {
 
 pred five_horizontal[b:Board, p:Player] {
     some row, col:Int | {
-        row >= 0
-        row <= 13
-        col >= 0
-        col <= 19
         b.position[row][add[col,0]] = p
         b.position[row][add[col,1]] = p
         b.position[row][add[col,2]] = p
@@ -175,10 +172,6 @@ pred five_horizontal[b:Board, p:Player] {
 
 pred five_decr_diagonal[b:Board, p:Player] {
     some row, col:Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 9
         b.position[add[row,0]][add[col,0]] = p
         b.position[add[row,1]][add[col,1]] = p
         b.position[add[row,2]][add[col,2]] = p
@@ -189,10 +182,6 @@ pred five_decr_diagonal[b:Board, p:Player] {
 
 pred five_incr_diagonal[b: Board, p: Player] {
     some row, col: Int | {
-        row >= 4
-        row <= 13
-        col >= 0
-        col <= 9
         b.position[subtract[row,0]][add[col,0]] = p
         b.position[subtract[row,1]][add[col,1]] = p
         b.position[subtract[row,2]][add[col,2]] = p
@@ -203,51 +192,51 @@ pred five_incr_diagonal[b: Board, p: Player] {
 
 
 
-pred four_row[b:Board, p:Player] {
-    // four_vertical[b, p] 
-    // four_horizontal[b,p]
-    four_decr_diagonal[b,p]
-    // or four_vertical[b,p] or four_diagonal[b,p]
-}
+// pred four_row[b:Board, p:Player] {
+//     // four_vertical[b, p] 
+//     // four_horizontal[b,p]
+//     four_decr_diagonal[b,p]
+//     // or four_vertical[b,p] or four_diagonal[b,p]
+// }
 
-pred four_vertical[b:Board, p:Player] {
-    some row,col:Int | {
-        row >= 0
-        row <= 10
-        col >= 0
-        col <= 13
-        b.position[add[row,0]][col] = p
-        b.position[add[row,1]][col] = p
-        b.position[add[row,2]][col] = p
-        b.position[add[row,3]][col] = p
-    }
-}
+// pred four_vertical[b:Board, p:Player] {
+//     some row,col:Int | {
+//         row >= 0
+//         row <= 10
+//         col >= 0
+//         col <= 13
+//         b.position[add[row,0]][col] = p
+//         b.position[add[row,1]][col] = p
+//         b.position[add[row,2]][col] = p
+//         b.position[add[row,3]][col] = p
+//     }
+// }
 
-pred four_horizontal[b:Board, p:Player] {
-    some row, col:Int | {
-        row >= 0
-        row <= 13
-        col >= 0
-        col <= 10
-        b.position[row][add[col,0]] = p
-        b.position[row][add[col,1]] = p
-        b.position[row][add[col,2]] = p
-        b.position[row][add[col,3]] = p
-    }
-}
+// pred four_horizontal[b:Board, p:Player] {
+//     some row, col:Int | {
+//         row >= 0
+//         row <= 13
+//         col >= 0
+//         col <= 10
+//         b.position[row][add[col,0]] = p
+//         b.position[row][add[col,1]] = p
+//         b.position[row][add[col,2]] = p
+//         b.position[row][add[col,3]] = p
+//     }
+// }
 
-pred four_decr_diagonal[b:Board, p:Player] {
-    some row, col:Int | {
-        row >= 0
-        row <= 10
-        col >= 0
-        col <= 10
-        b.position[add[row,0]][add[col,0]] = p
-        b.position[add[row,1]][add[col,1]] = p
-        b.position[add[row,2]][add[col,2]] = p
-        b.position[add[row,3]][add[col,3]] = p
-    }
-}
+// pred four_decr_diagonal[b:Board, p:Player] {
+//     some row, col:Int | {
+//         row >= 0
+//         row <= 10
+//         col >= 0
+//         col <= 10
+//         b.position[add[row,0]][add[col,0]] = p
+//         b.position[add[row,1]][add[col,1]] = p
+//         b.position[add[row,2]][add[col,2]] = p
+//         b.position[add[row,3]][add[col,3]] = p
+//     }
+// }
 
 pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
   -- guard:
@@ -314,5 +303,4 @@ run {
     wellformed
     TransitionStates 
     balanced 
-
     } for exactly 2 Board, 5 Int for {next is linear}
