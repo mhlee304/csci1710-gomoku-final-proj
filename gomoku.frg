@@ -109,19 +109,144 @@ pred winner[b: Board, p: Player] {
 }
 
 pred starting[b: Board] {
-    all row, col: Int | {
-       no b.position[row][col] 
-    }
-    
-    //aka all boards don't have the first board in the next
+        //aka all boards don't have the first board in the next
     all non_start:Board | {
         non_start.next != b
     }
 
     //white pebbles and black pebbles should be 0
-    #{row, col: Int | b.position[row][col] = White} = 0
-    #{row, col: Int | b.position[row][col] = Black} = 0
+    #{row, col: Int | b.position[row][col] = White} = 24
+    #{row, col: Int | b.position[row][col] = Black} = 24
 
+    //Defense
+    five_row[b, White]
+    // defensive_plays[b]
+
+
+    //Attack
+    //4 in a row of player's stone --> should place their stone on the end
+    //3 in a row of a player's stone --> should place their stone on one of the ends
+}
+
+pred defensive_plays[b:Board] {
+    //Defense
+    //4 in a row of opponenet's stone --> player should place thier stone on the end of the row
+    // four_row[b,White]
+    //2 + _ + 2 in a row of opponent's stone --> player needs to stop in
+    //3 + _ + 1 in a row of opponenet's stone --> player needs to stop it
+    //1 + _ 3 in a row of opponene't stone --> player needs to stop it
+    //3 in a row of opponent's stone --> player should place their stone on the end of the row
+}
+
+pred five_row[b:Board, p:Player] {
+    five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
+    // five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
+}
+
+
+
+pred five_vertical[b:Board, p:Player] {
+    some row,col:Int | {
+        row >= 0
+        row <= 9
+        col >= 0
+        col <= 13
+        b.position[add[row,0]][col] = p
+        b.position[add[row,1]][col] = p
+        b.position[add[row,2]][col] = p
+        b.position[add[row,3]][col] = p
+        b.position[add[row,4]][col] = p
+    }
+}
+
+pred five_horizontal[b:Board, p:Player] {
+    some row, col:Int | {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 19
+        b.position[row][add[col,0]] = p
+        b.position[row][add[col,1]] = p
+        b.position[row][add[col,2]] = p
+        b.position[row][add[col,3]] = p
+        b.position[row][add[col,4]] = p
+    }
+}
+
+pred five_decr_diagonal[b:Board, p:Player] {
+    some row, col:Int | {
+        row >= 0
+        row <= 9
+        col >= 0
+        col <= 9
+        b.position[add[row,0]][add[col,0]] = p
+        b.position[add[row,1]][add[col,1]] = p
+        b.position[add[row,2]][add[col,2]] = p
+        b.position[add[row,3]][add[col,3]] = p
+        b.position[add[row,4]][add[col,4]] = p
+    }
+}
+
+pred five_incr_diagonal[b: Board, p: Player] {
+    some row, col: Int | {
+        row >= 4
+        row <= 13
+        col >= 0
+        col <= 9
+        b.position[subtract[row,0]][add[col,0]] = p
+        b.position[subtract[row,1]][add[col,1]] = p
+        b.position[subtract[row,2]][add[col,2]] = p
+        b.position[subtract[row,3]][add[col,3]] = p
+        b.position[subtract[row,4]][add[col,4]] = p
+    }
+}
+
+
+
+pred four_row[b:Board, p:Player] {
+    // four_vertical[b, p] 
+    // four_horizontal[b,p]
+    four_decr_diagonal[b,p]
+    // or four_vertical[b,p] or four_diagonal[b,p]
+}
+
+pred four_vertical[b:Board, p:Player] {
+    some row,col:Int | {
+        row >= 0
+        row <= 10
+        col >= 0
+        col <= 13
+        b.position[add[row,0]][col] = p
+        b.position[add[row,1]][col] = p
+        b.position[add[row,2]][col] = p
+        b.position[add[row,3]][col] = p
+    }
+}
+
+pred four_horizontal[b:Board, p:Player] {
+    some row, col:Int | {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 10
+        b.position[row][add[col,0]] = p
+        b.position[row][add[col,1]] = p
+        b.position[row][add[col,2]] = p
+        b.position[row][add[col,3]] = p
+    }
+}
+
+pred four_decr_diagonal[b:Board, p:Player] {
+    some row, col:Int | {
+        row >= 0
+        row <= 10
+        col >= 0
+        col <= 10
+        b.position[add[row,0]][add[col,0]] = p
+        b.position[add[row,1]][add[col,1]] = p
+        b.position[add[row,2]][add[col,2]] = p
+        b.position[add[row,3]][add[col,3]] = p
+    }
 }
 
 pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
@@ -160,24 +285,27 @@ pred ending[final: Board] {
     final.next = none 
 }
 
+
 pred TransitionStates{
     some init,final: Board{
-        // starting[init]
+        starting[init]
         // ending[final]
 
-        #{row, col: Int | init.next.position[row][col] = White} = 5
-        #{row, col: Int | init.next.position[row][col] = Black} = 5
+        // #{row, col: Int | init.position[row][col] = White} = 24
+        // #{row, col: Int | init.position[row][col] = Black} = 24
 
         // #{row, col: Int | init.next.position[row][col] = White} = 1
         // #{row, col: Int | init.next.position[row][col] = Black} = 0
 
-        all b: Board | some b.next implies {
-            some row, col: Int, p: Player | {
-                move[b, b.next, row, col, p]            
-            }
-            or
-                doNothing[b, b.next]
-        }
+
+
+        // all b: Board | some b.next implies {
+        //     some row, col: Int, p: Player | {
+        //         move[b, b.next, row, col, p]            
+        //     }
+        //     or
+        //         doNothing[b, b.next]
+        // }
     }
 }
 
@@ -186,4 +314,5 @@ run {
     wellformed
     TransitionStates 
     balanced 
+
     } for exactly 2 Board, 5 Int for {next is linear}
