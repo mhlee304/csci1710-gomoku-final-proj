@@ -53,6 +53,8 @@ pred winCol[b: Board, p: Player] {
         b.position[add[row,2]][col] = p
         b.position[add[row,3]][col] = p
         b.position[add[row,4]][col] = p
+
+       
     }
 }
 
@@ -113,17 +115,16 @@ pred starting[b: Board] {
     all non_start:Board | {
         non_start.next != b
     }
-
     //white pebbles and black pebbles should be 0
     #{row, col: Int | b.position[row][col] = White} = 24
     #{row, col: Int | b.position[row][col] = Black} = 24
 
     //SETUP
-    not_five_row[b, White]
-    not_five_row[b,Black]
+
 
     //Defense
-    
+    not_five_row[b, White]
+    // defensive_plays[b]
 
 
     //Attack
@@ -142,7 +143,7 @@ pred defensive_plays[b:Board] {
 }
 
 pred not_five_row[b:Board, p:Player] {
-    not five_vertical[b, p] 
+    not five_vertical[b, p]
     not five_horizontal[b,p]
     not five_decr_diagonal[b,p]
     not five_incr_diagonal[b,p]
@@ -298,9 +299,9 @@ pred TransitionStates{
     }
 }
 
-// run { all b: Board | testingBoardVisualization[b]} for exactly 1 Board
 run { 
     wellformed
     TransitionStates 
     balanced 
+
     } for exactly 2 Board, 5 Int for {next is linear}
