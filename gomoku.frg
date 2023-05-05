@@ -53,6 +53,8 @@ pred winCol[b: Board, p: Player] {
         b.position[add[row,2]][col] = p
         b.position[add[row,3]][col] = p
         b.position[add[row,4]][col] = p
+
+       
     }
 }
 
@@ -113,15 +115,34 @@ pred starting[b: Board] {
     all non_start:Board | {
         non_start.next != b
     }
-
+// //  
     //white pebbles and black pebbles should be 0
     #{row, col: Int | b.position[row][col] = White} = 24
     #{row, col: Int | b.position[row][col] = Black} = 24
 
-    //Defense
-    five_row[b, White]
-    // defensive_plays[b]
+    not five_vertical[b, White]
+    not five_horizontal[b,White]
+    not five_decr_diagonal[b,White]
+    not five_incr_diagonal[b,White]
 
+    not five_vertical[b, Black]
+    not five_horizontal[b,Black]
+    not five_decr_diagonal[b,Black]
+    not five_incr_diagonal[b,Black]
+
+    // all row: Int {
+    //     row >= 0
+    //     row <= 14 
+        
+
+    //     // add[#{b.position[row][5] = White}, #{b.position[row][6] = White}, #{b.position[row][7] = White},
+    //     // #{b.position[row][8] = White}, #{b.position[row][9] = White}]!= 5 
+
+    //     // add[#{b.position[row][10] = White}, #{b.position[row][11] = White}, #{b.position[row][12] = White},
+    //     // #{b.position[row][13] = White}, #{b.position[row][14] = White}] != 5 
+    // }
+    //Defense
+    // defensive_plays[b]
 
     //Attack
     //4 in a row of player's stone --> should place their stone on the end
@@ -138,19 +159,29 @@ pred defensive_plays[b:Board] {
     //3 in a row of opponent's stone --> player should place their stone on the end of the row
 }
 
-pred five_row[b:Board, p:Player] {
-    five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
-    // five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
-}
+// pred five_row[b:Board, p:Player] {
+// //   five_vertical[b, p] or five_horizontal[b,p] or  five_decr_diagonal[b,p] or five_incr_diagonal[b,p])
+//     five_vertical[b,p]
+//     // five_vertical[b, p] or five_horizontal[b,p] or five_decr_diagonal[b,p] or five_incr_diagonal[b,p]
+// }
+
+// pred no_five_vertical[b:Board, p:Player, row: Int, col:Int] {
+//         b.position[add[row,0]][col] = p
+//         b.position[add[row,1]][col] = p
+//         b.position[add[row,2]][col] = p
+//         b.position[add[row,3]][col] = p
+//         b.position[add[row,4]][col] = p
+//     }
+
 
 
 
 pred five_vertical[b:Board, p:Player] {
     some row,col:Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 13
+        // row >= 0
+        // row <= 9
+        // col >= 0
+        // col <= 13
         b.position[add[row,0]][col] = p
         b.position[add[row,1]][col] = p
         b.position[add[row,2]][col] = p
@@ -161,10 +192,10 @@ pred five_vertical[b:Board, p:Player] {
 
 pred five_horizontal[b:Board, p:Player] {
     some row, col:Int | {
-        row >= 0
-        row <= 13
-        col >= 0
-        col <= 19
+        // row >= 0
+        // row <= 13
+        // col >= 0
+        // col <= 19
         b.position[row][add[col,0]] = p
         b.position[row][add[col,1]] = p
         b.position[row][add[col,2]] = p
@@ -175,10 +206,10 @@ pred five_horizontal[b:Board, p:Player] {
 
 pred five_decr_diagonal[b:Board, p:Player] {
     some row, col:Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 9
+    //     row >= 0
+    //     row <= 9
+    //     col >= 0
+    //     col <= 9
         b.position[add[row,0]][add[col,0]] = p
         b.position[add[row,1]][add[col,1]] = p
         b.position[add[row,2]][add[col,2]] = p
@@ -189,10 +220,10 @@ pred five_decr_diagonal[b:Board, p:Player] {
 
 pred five_incr_diagonal[b: Board, p: Player] {
     some row, col: Int | {
-        row >= 4
-        row <= 13
-        col >= 0
-        col <= 9
+        // row >= 4
+        // row <= 13
+        // col >= 0
+        // col <= 9
         b.position[subtract[row,0]][add[col,0]] = p
         b.position[subtract[row,1]][add[col,1]] = p
         b.position[subtract[row,2]][add[col,2]] = p
@@ -314,5 +345,4 @@ run {
     wellformed
     TransitionStates 
     balanced 
-
-    } for exactly 2 Board, 5 Int for {next is linear}
+    } for exactly 1 Board, 5 Int for {next is linear}
