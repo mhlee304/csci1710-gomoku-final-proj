@@ -302,10 +302,232 @@ pred four_in_a_row[pre:Board, p:Player, row:Int, col:Int] {
     four_horizontal_two[pre, p, row, col] or four_vertical_two[pre, p, row, col] or four_decr_diagonal_two[pre, p,row,col] or four_incr_diagonal_two[pre, p,row,col] or 
     two_twos_vertical[pre, p, row, col] or two_twos_horizontal[pre, p, row, col] or two_twos_decr_diag[pre, p, row, col] or two_twos_incr_diag[pre, p, row, col] or 
     one_three_vertical[pre, p, row, col] or one_three_horizontal[pre, p, row, col] or one_three_decr_diag[pre, p, row, col] or one_three_incr_diag[pre, p, row, col] or 
-    three_one_vertical[pre, p, row, col] or three_one_horizontal[pre, p, row, col] or three_one_decr_diag[pre, p, row, col] or three_one_incr_diag[pre, p, row, col]
+    three_one_vertical[pre, p, row, col] or three_one_horizontal[pre, p, row, col] or three_one_decr_diag[pre, p, row, col] or three_one_incr_diag[pre, p, row, col]   
+}
+
+//THREES
+
+//Threes optimized
+pred three_horizontal_optimized[pre:Board, p:Player, row:Int, col:Int] {
+    three_horizontal[pre, p, row, col]
+    no pre.position[row][add[col,4]] 
+}
+
+pred three_vertical_optimized[pre:Board, p:Player, row:Int, col:Int] {
+    three_vertical[pre, p, row, col]
+    no pre.position[add[row,4]][col]
+}
+
+pred three_decr_diagonal_optimized[pre:Board, p:Player, row:Int, col:Int] {
+    three_decr_diagonal[pre, p, row, col]
+    no pre.position[add[row,4]][add[col,4]]
+}
+
+pred three_incr_diagonal_optimized[pre:Board, p:Player, row:Int, col:Int] {
+    three_incr_diagonal[pre, p, row, col]
+    no pre.position[subtract[row,4]][add[col,4]]
+}
+
+//one - two optimized
+pred one_two_vertical_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[subtract[row,2]][col]
+    one_two_vertical[pre, p, row, col]
+    no pre.position[add[row,3]][col]
+}
+
+pred one_two_horizontal_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[row][subtract[col, 2]]
+    one_two_horizontal[pre, p, row, col]
+    no pre.position[row][add[col, 3]]
+}
+
+pred one_two_decr_diag_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[subtract[row,2]][subtract[col,1]]
+    one_two_decr_diag[pre, p, row, col]
+    no pre.position[add[row,3]][add[col,3]]
+}
+
+pred one_two_incr_diag_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[add[row,1]][subtract[col,2]]
+    one_two_incr_diag[pre, p, row, col]
+    no pre.position[subtract[row,3]][add[col,3]]
+}
+
+//two one optimized
+// 2 + _ + 1 --> horixontal, vertical, diagonal, diagonal
+pred two_one_vertical_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[subtract[row,3]][col]
+    two_one_vertical[pre, p, row, col]
+    no pre.position[add[row,2]][col]
+}
+
+pred two_one_horizontal_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[row][subtract[col, 3]]
+    two_one_horizontal[pre, p, row, col]
+    no pre.position[row][add[col, 1]]
+}
+
+pred two_one_decr_diag_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[subtract[row,3]][subtract[col,3]]
+    two_one_decr_diag[pre, p, row, col]
+    no pre.position[add[row,1]][add[col,2]]
+}
+
+pred two_one_incr_diag_optimized[pre:Board, p:Player, row:Int, col:Int] { 
+    no pre.position[add[row,3]][subtract[col,3]]
+    two_one_incr_diag[pre, p, row, col]
+    no pre.position[subtract[row,2]][add[col,2]]
+}
+
+
+
+
+//_ + 3 --> horizontal, vertical, diagonal, diagonal
+
+pred three_horizontal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[row][add[col,1]] = p
+    pre.position[row][add[col,2]] = p  
+    pre.position[row][add[col,3]] = p  
+}
+
+pred three_vertical[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    pre.position[add[row,2]][col] = p
+    pre.position[add[row,3]][col] = p
+}
+
+pred three_decr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+    pre.position[add[row,2]][add[col,2]] = p
+    pre.position[add[row,3]][add[col,3]] = p
+}
+
+
+
+pred three_incr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+    pre.position[subtract[row,2]][add[col,2]] = p
+    pre.position[subtract[row,3]][add[col,3]] = p
+}
+//3 + _ --> horizonta, vertical, diagonal, diagonal
+
+
+pred three_horizontal_two[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[row][subtract[col,1]] = p
+    pre.position[row][subtract[col,2]] = p  
+    pre.position[row][subtract[col,3]] = p 
+}
+
+pred three_vertical_two[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][col] = p
+    pre.position[subtract[row,2]][col] = p
+    pre.position[subtract[row,3]][col] = p
+}
+
+pred three_decr_diagonal_two[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    pre.position[subtract[row,2]][subtract[col,2]] = p
+    pre.position[subtract[row,3]][subtract[col,3]] = p
+}
+
+pred three_incr_diagonal_two[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[add[row,1]][subtract[col,1]] = p
+    pre.position[add[row,2]][subtract[col,2]] = p
+    pre.position[add[row,3]][subtract[col,3]] = p
+}
+
+
+// 1 + _ + 2 --> horizontal, vertical, diagonal, diagonal
+pred one_two_vertical[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,1]][col] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    pre.position[add[row,2]][col] = p 
+}
+
+pred one_two_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[row][subtract[col, 1]] = p
+    no pre.position[row][col]
+    pre.position[row][add[col, 1]] = p
+    pre.position[row][add[col, 2]] = p
+}
+
+pred one_two_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+    pre.position[add[row,2]][add[col,2]] = p
+}
+
+pred one_two_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[add[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+    pre.position[subtract[row,2]][add[col,2]] = p
+}
+
+// 2 + _ + 1 --> horixontal, vertical, diagonal, diagonal
+pred two_one_vertical[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,2]][col] = p
+    pre.position[subtract[row,1]][col] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
     
 }
 
+pred two_one_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[row][subtract[col, 2]] = p
+    pre.position[row][subtract[col, 1]] = p
+    no pre.position[row][col]
+    pre.position[row][add[col, 1]] = p
+}
+
+pred two_one_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,2]][subtract[col,2]] = p
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+}
+
+pred two_one_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[add[row,2]][subtract[col,2]] = p
+    pre.position[add[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+}
+
+pred three_in_a_row[pre:Board, p:Player, row:Int, col:Int] {
+    three_horizontal[pre, p, row, col] or three_vertical[pre, p, row, col] or three_decr_diagonal[pre, p,row,col] or three_incr_diagonal[pre, p,row,col] or 
+    three_horizontal_two[pre, p, row, col] or three_vertical_two[pre, p, row, col] or three_decr_diagonal_two[pre, p,row,col] or three_incr_diagonal_two[pre, p,row,col] or 
+    one_two_vertical[pre, p, row, col] or one_two_horizontal[pre, p, row, col] or one_two_decr_diag[pre, p, row, col] or one_two_incr_diag[pre, p, row, col] or 
+    two_one_vertical[pre, p, row, col] or two_one_horizontal[pre, p, row, col] or two_one_decr_diag[pre, p, row, col] or two_one_incr_diag[pre, p, row, col]   
+}
+
+pred three_in_a_row_optimized[pre:Board, p:Player, row:Int, col:Int] {
+    three_horizontal_optimized[pre, p, row, col] or three_vertical_optimized[pre, p, row, col] or three_decr_diagonal_optimized[pre, p,row,col] or three_incr_diagonal_optimized[pre, p,row,col] or 
+    one_two_vertical_optimized[pre, p, row, col] or one_two_horizontal_optimized[pre, p, row, col] or one_two_decr_diag_optimized[pre, p, row, col] or one_two_incr_diag_optimized[pre, p, row, col] or 
+    two_one_vertical_optimized[pre, p, row, col] or two_one_horizontal_optimized[pre, p, row, col] or two_one_decr_diag_optimized[pre, p, row, col] or two_one_incr_diag_optimized[pre, p, row, col]   
+}
+
+pred three_row_prior[pre:Board, p:Player] {
+    some row,col:Int {
+        three_in_a_row[pre, p, row, col]
+    }
+}
+
+pred three_row_prior_optimized[pre:Board, p:Player] {
+    some row,col:Int {
+        three_in_a_row_optimized[pre, p, row, col]
+    }
+}
 
 pred prior_board[pre:Board, post:Board, row:Int, col:Int] {
     no pre.position[row][col] -- nobody's moved there yet
@@ -334,6 +556,30 @@ pred complete_four_set[b:Board] {
         col <= 13
         prior_board[b, b.next, row, col]
         four_in_a_row[b,White,row, col]
+        b.next.position[row][col] = White
+    }
+}
+
+pred complete_three_set[b:Board] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col]
+        three_in_a_row[b,White,row, col]
+        b.next.position[row][col] = White
+    }
+}
+
+pred complete_three_set_optimized[b:Board] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col]
+        three_in_a_row_optimized[b,White,row, col]
         b.next.position[row][col] = White
     }
 }
@@ -388,6 +634,31 @@ pred defend_four_set[b:Board] {
     }
 }
 
+pred defend_three_set_optimized[b:Board] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col]
+        three_in_a_row_optimized[b,Black,row, col]
+        b.next.position[row][col] = White
+    }
+}
+
+pred defend_three_set[b:Board] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col]
+        three_in_a_row[b,Black,row, col]
+        b.next.position[row][col] = White
+    }
+}
+
+
 
 
 
@@ -403,11 +674,19 @@ pred TransitionStates{
             //TESTS
             // not test_restrictions[b, White]
             // allowed[b, White]
+            not four_row_prior[b,White]
+            not four_row_prior[b,Black]
+            three_row_prior[b,White]
 
             //four in a row prior --> comlete the set
             four_row_prior[b, White] implies complete_four_set[b]
             four_row_prior[b,Black] implies defend_four_set[b]
-            // four_row_prior[b, Black] and not four_row_prior[b, White] implies complete_four_set[b,Black]
+
+            three_row_prior_optimized[b, White] implies complete_three_set_optimized[b]
+            three_row_prior_optimized[b,Black] implies defend_three_set_optimized[b]
+
+            three_row_prior[b, White] implies complete_three_set[b]
+            three_row_prior[b,Black] implies defend_three_set[b]
 
             //default case
             // not four_row_prior[b,Black] implies randomly_place[b, White]
