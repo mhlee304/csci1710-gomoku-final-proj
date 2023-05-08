@@ -228,39 +228,6 @@ pred four_incr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
     pre.position[subtract[row,4]][add[col,4]] = p
 }
 
-pred two_twos_vertical[pre:Board, p:Player, row:Int, col:Int] { 
-    pre.position[subtract[row,2]][col] = p
-    pre.position[subtract[row,1]][col] = p
-    no pre.position[row][col]
-    pre.position[add[row,1]][col] = p
-    pre.position[add[row,2]][col] = p
-}
-
-pred two_twos_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
-    pre.position[subtract[row,2]][col] = p
-    pre.position[subtract[row,1]][col] = p
-    no pre.position[row][col]
-    pre.position[add[row,1]][col] = p
-    pre.position[add[row,2]][col] = p
-}
-
-pred two_twos_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
-    pre.position[subtract[row,2]][subtract[col,2]] = p
-    pre.position[subtract[row,1]][subtract[col,1]] = p
-    no pre.position[row][col]
-    pre.position[add[row,1]][add[col,1]] = p
-    pre.position[add[row,2]][add[col,2]] = p
-}
-
-pred two_twos_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
-    pre.position[add[row,2]][subtract[col,2]] = p
-    pre.position[add[row,1]][subtract[col,1]] = p
-    no pre.position[row][col]
-    pre.position[subtract[row,1]][add[col,1]] = p
-    pre.position[subtract[row,2]][add[col,2]] = p
-}
-
-
 
 //2 + 2 -- vertical, horizontal, diag, diag
 //1 + 3 -- vertical, horizontal, diag, diag
