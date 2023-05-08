@@ -124,6 +124,7 @@ pred starting[b: Board] {
 
     //Defense
     not_five_row[b, White]
+    not_five_row[b,Black]
     // defensive_plays[b]
 
 
@@ -193,87 +194,95 @@ pred five_incr_diagonal[b: Board, p: Player] {
 
 
 
-// pred four_row[b:Board, p:Player] {
-//     // four_vertical[b, p] 
-//     // four_horizontal[b,p]
-//     four_decr_diagonal[b,p]
-//     // or four_vertical[b,p] or four_diagonal[b,p]
-// }
-
-// pred four_vertical[b:Board, p:Player] {
-//     some row,col:Int | {
-//         row >= 0
-//         row <= 10
-//         col >= 0
-//         col <= 13
-//         b.position[add[row,0]][col] = p
-//         b.position[add[row,1]][col] = p
-//         b.position[add[row,2]][col] = p
-//         b.position[add[row,3]][col] = p
-//     }
-// }
-
-// pred four_horizontal[b:Board, p:Player] {
-//     some row, col:Int | {
-//         row >= 0
-//         row <= 13
-//         col >= 0
-//         col <= 10
-//         b.position[row][add[col,0]] = p
-//         b.position[row][add[col,1]] = p
-//         b.position[row][add[col,2]] = p
-//         b.position[row][add[col,3]] = p
-//     }
-// }
-
-// pred four_decr_diagonal[b:Board, p:Player] {
-//     some row, col:Int | {
-//         row >= 0
-//         row <= 10
-//         col >= 0
-//         col <= 10
-//         b.position[add[row,0]][add[col,0]] = p
-//         b.position[add[row,1]][add[col,1]] = p
-//         b.position[add[row,2]][add[col,2]] = p
-//         b.position[add[row,3]][add[col,3]] = p
-//     }
-// }
-
-pred move[pre: Board, post:Board, row: Int, col: Int, p: Player] {
-  -- guard:
-//   #Int = 14 
-  no pre.position[row][col] -- nobody's moved there yet
-  
-  row <= 13 and row >= 0
-  col <= 13  and col >= 0 
-
-  //Pre conditions
-  p = Black implies Bturn[pre] -- appropriate turn
-  p = White implies Wturn[pre]  
-
-
-  all p:Player | not winner[pre,p]
-  
-  -- action:(what does the post-state then look like?)
-  post.position[row][col] = p
-
-  all row2: Int, col2: Int | (row!=row2 or col!=col2) implies {                
-        post.position[row2][col2] = pre.position[row2][col2]     
-    } 
+//FOUR PREDICATES
+pred four_horizontal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[row][add[col,1]] = p
+    pre.position[row][add[col,2]] = p  
+    pre.position[row][add[col,3]] = p  
+    pre.position[row][add[col,4]] = p
 }
 
-pred doNothing[pre: Board, post: Board]{
-    some p: Player | winner[pre, p]
+pred four_vertical[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    pre.position[add[row,2]][col] = p
+    pre.position[add[row,3]][col] = p
+    pre.position[add[row,4]][col] = p
+}
 
-    all row2: Int, col2: Int|{
-        post.position[row2][col2] = pre.position[row2][col2]
+pred four_decr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+    pre.position[add[row,2]][add[col,2]] = p
+    pre.position[add[row,3]][add[col,3]] = p
+    pre.position[add[row,4]][add[col,4]] = p
+
+}
+
+pred four_incr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+    pre.position[subtract[row,2]][add[col,2]] = p
+    pre.position[subtract[row,3]][add[col,3]] = p
+    pre.position[subtract[row,4]][add[col,4]] = p
+}
+
+//2 + 2 -- vertical, horizontal, diag, diag
+//1 + 3 -- vertical, horizontal, diag, diag
+//3 + 1 -- vertical, horixonta, diag, diag
+
+
+pred four_row_prior[pre:Board, p:Player] {
+    some row,col:Int {
+        four_horizontal[pre, p, row, col] or four_vertical[pre,p,row,col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col]
     }
 }
 
-pred ending[final: Board] {
-    // winner[final, Black] or winner[final, White] //commented for the time being
-    final.next = none 
+pred four_in_a_row[pre:Board, p:Player, row:Int, col:Int] {
+    four_horizontal[pre, p, row, col] or four_vertical[pre, p, row, col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col]
 }
+
+//first check if there are 4 in a row for the opponent's stones
+
+
+pred prior_board[pre:Board, post:Board, row:Int, col:Int, p:Player] {
+    no pre.position[row][col] -- nobody's moved there yet
+    
+    row <= 13 and row >= 0
+    col <= 13  and col >= 0 
+    p = Black implies Bturn[pre] -- appropriate turn
+    p = White implies Wturn[pre]  
+
+    all row2: Int, col2: Int | (row!=row2 or col!=col2) implies {                
+        post.position[row2][col2] = pre.position[row2][col2]     
+    } 
+
+}
+
+
+pred complete_four_set[b:Board, p:Player] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col, p]
+        four_in_a_row[b,p,row, col]
+        b.next.position[row][col] = p
+    }
+}
+
+pred test_set_up[pre:Board] {
+    some row,col:Int {
+        four_vertical[pre, White, row, col] or four_horizontal[pre, White, row, col] or four_decr_diagonal[pre, White,row,col]//#or four_incr_diagonal[pre, White,row,col]
+
+
+
+    }
+}
+
+
 
 
 pred TransitionStates{
@@ -281,21 +290,19 @@ pred TransitionStates{
         starting[init]
         // ending[final]
 
-        // #{row, col: Int | init.position[row][col] = White} = 24
-        // #{row, col: Int | init.position[row][col] = Black} = 24
+        all b: Board | some b.next implies {
 
-        // #{row, col: Int | init.next.position[row][col] = White} = 1
-        // #{row, col: Int | init.next.position[row][col] = Black} = 0
+            //TESTS
+            b.position[6][3] = White
+            b.position[5][4] = White
+            b.position[4][5] = White
+            b.position[3][6] = White
+            not test_set_up[b]
 
-
-
-        // all b: Board | some b.next implies {
-        //     some row, col: Int, p: Player | {
-        //         move[b, b.next, row, col, p]            
-        //     }
-        //     or
-        //         doNothing[b, b.next]
-        // }
+            //four in a row prior --> comlete the set
+            four_row_prior[b, White] implies complete_four_set[b, White]
+            // four_row_prior[b, Black] and not four_row_prior[b, White] implies complete_four_set[b,Black]
+        }
     }
 }
 
