@@ -41,74 +41,16 @@ pred balanced{
     }
 }
 
-//Constraints to a Winner
-pred winCol[b: Board, p: Player] {
-    some row, col: Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 13
-        b.position[add[row,0]][col] = p
-        b.position[add[row,1]][col] = p
-        b.position[add[row,2]][col] = p
-        b.position[add[row,3]][col] = p
-        b.position[add[row,4]][col] = p
 
-       
-    }
-}
-
-pred winRow[b: Board, p: Player] {
-    some row, col: Int | {
-        row >= 0
-        row <= 13
-        col >= 0
-        col <= 9
-        b.position[row][add[col,0]] = p
-        b.position[row][add[col,1]] = p
-        b.position[row][add[col,2]] = p
-        b.position[row][add[col,3]] = p
-        b.position[row][add[col,4]] = p
-    }
-}
-
-pred winDiagnoalIncr[b: Board, p: Player] {
-    some row, col: Int | {
-        row >= 4
-        row <= 13
-        col >= 0
-        col <= 9
-        b.position[add[row,0]][add[col,0]] = p
-        b.position[add[row,1]][add[col,1]] = p
-        b.position[add[row,2]][add[col,2]] = p
-        b.position[add[row,3]][add[col,3]] = p
-        b.position[add[row,4]][add[col,4]] = p
-    }
-}
-
-pred winDiagonalDecr[b: Board, p: Player] {
-    some row, col: Int | {
-        row >= 0
-        row <= 9
-        col >= 0
-        col <= 9
-        b.position[subtract[row,0]][subtract[col,0]] = p
-        b.position[subtract[row,1]][subtract[col,1]] = p
-        b.position[subtract[row,2]][subtract[col,2]] = p
-        b.position[subtract[row,3]][subtract[col,3]] = p
-        b.position[subtract[row,4]][subtract[col,4]] = p
-    }
-}
-
-pred winner[b: Board, p: Player] {
-    winRow[b, p]
-    or 
-    winCol[b, p]
-    or 
-    winDiagnoalIncr[b,p]
-    or 
-    winDiagonalDecr[b, p]
-}
+// pred winner[b: Board, p: Player] {
+//     winRow[b, p]
+//     or 
+//     winCol[b, p]
+//     or 
+//     winDiagnoalIncr[b,p]
+//     or 
+//     winDiagonalDecr[b, p]
+// }
 
 pred starting[b: Board] {
         //aka all boards don't have the first board in the next
@@ -228,23 +170,122 @@ pred four_incr_diagonal[pre:Board, p:Player, row:Int, col:Int] {
     pre.position[subtract[row,4]][add[col,4]] = p
 }
 
-
 //2 + 2 -- vertical, horizontal, diag, diag
+pred two_twos_vertical[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,2]][col] = p
+    pre.position[subtract[row,1]][col] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    pre.position[add[row,2]][col] = p
+}
+
+pred two_twos_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[row][subtract[col, 2]] = p
+    pre.position[row][subtract[col, 1]] = p
+    no pre.position[row][col]
+    pre.position[row][add[col, 1]] = p
+    pre.position[row][add[col, 2]] = p
+}
+
+pred two_twos_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,2]][subtract[col,2]] = p
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+    pre.position[add[row,2]][add[col,2]] = p
+}
+
+pred two_twos_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[add[row,2]][subtract[col,2]] = p
+    pre.position[add[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+    pre.position[subtract[row,2]][add[col,2]] = p
+}
+
+
 //1 + 3 -- vertical, horizontal, diag, diag
+pred one_three_vertical[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,1]][col] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    pre.position[add[row,2]][col] = p
+    pre.position[add[row,3]][col] = p
+    
+}
+
+pred one_three_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[row][subtract[col, 1]] = p
+    no pre.position[row][col]
+    pre.position[row][add[col, 1]] = p
+    pre.position[row][add[col, 2]] = p
+    pre.position[row][add[col, 3]] = p
+}
+
+pred one_three_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+    pre.position[add[row,2]][add[col,2]] = p
+    pre.position[add[row,3]][add[col,3]] = p
+}
+
+pred one_three_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[add[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+    pre.position[subtract[row,2]][add[col,2]] = p
+    pre.position[subtract[row,3]][add[col,3]] = p
+}
+
 //3 + 1 -- vertical, horixonta, diag, diag
+pred three_one_vertical[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,3]][col] = p
+    pre.position[subtract[row,2]][col] = p
+    pre.position[subtract[row,1]][col] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][col] = p
+    
+}
+
+pred three_one_horizontal[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[row][subtract[col, 3]] = p
+    pre.position[row][subtract[col, 2]] = p
+    pre.position[row][subtract[col, 1]] = p
+    no pre.position[row][col]
+    pre.position[row][add[col, 1]] = p
+}
+
+pred three_one_decr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[subtract[row,3]][subtract[col,3]] = p
+    pre.position[subtract[row,2]][subtract[col,2]] = p
+    pre.position[subtract[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[add[row,1]][add[col,1]] = p
+}
+
+pred three_one_incr_diag[pre:Board, p:Player, row:Int, col:Int] { 
+    pre.position[add[row,3]][subtract[col,3]] = p
+    pre.position[add[row,2]][subtract[col,2]] = p
+    pre.position[add[row,1]][subtract[col,1]] = p
+    no pre.position[row][col]
+    pre.position[subtract[row,1]][add[col,1]] = p
+}
 
 
 pred four_row_prior[pre:Board, p:Player] {
     some row,col:Int {
-        four_horizontal[pre, p, row, col] or four_vertical[pre,p,row,col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col]
+        four_in_a_row[pre, p, row, col]
     }
 }
 
 pred four_in_a_row[pre:Board, p:Player, row:Int, col:Int] {
-    four_horizontal[pre, p, row, col] or four_vertical[pre, p, row, col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col]
+    four_horizontal[pre, p, row, col] or four_vertical[pre, p, row, col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col] or 
+    two_twos_vertical[pre, p, row, col] or two_twos_horizontal[pre, p, row, col] or two_twos_decr_diag[pre, p, row, col] or two_twos_incr_diag[pre, p, row, col] or 
+    one_three_vertical[pre, p, row, col] or one_three_horizontal[pre, p, row, col] or one_three_decr_diag[pre, p, row, col] or one_three_incr_diag[pre, p, row, col] or 
+    three_one_vertical[pre, p, row, col] or three_one_horizontal[pre, p, row, col] or three_one_decr_diag[pre, p, row, col] or three_one_incr_diag[pre, p, row, col]
+    
 }
-
-//first check if there are 4 in a row for the opponent's stones
 
 
 pred prior_board[pre:Board, post:Board, row:Int, col:Int, p:Player] {
@@ -274,12 +315,31 @@ pred complete_four_set[b:Board, p:Player] {
     }
 }
 
-pred test_set_up[pre:Board] {
+pred randomly_place[b:Board, p:Player] {
+    some row, col:Int {
+        row >= 0
+        row <= 13
+        col >= 0
+        col <= 13
+        prior_board[b, b.next, row, col, p]
+        
+        b.position[add[row,1]][col] = p or b.position[row][add[col, 1]] = p or b.position[subtract[row,1]][col] = p or b.position[row][subtract[col, 1]] = p
+        b.next.position[row][col] = p
+    }
+}
+
+pred test_restrictions[pre:Board, p:Player] {
     some row,col:Int {
-        four_vertical[pre, White, row, col] or four_horizontal[pre, White, row, col] or four_decr_diagonal[pre, White,row,col]//#or four_incr_diagonal[pre, White,row,col]
+        four_horizontal[pre, p, row, col] or four_vertical[pre, p, row, col] or four_decr_diagonal[pre, p,row,col] or four_incr_diagonal[pre, p,row,col] or 
+        two_twos_vertical[pre, p, row, col] or two_twos_horizontal[pre, p, row, col] or two_twos_decr_diag[pre, p, row, col] or two_twos_incr_diag[pre, p, row, col] or 
+        one_three_vertical[pre, p, row, col] or one_three_horizontal[pre, p, row, col] or one_three_decr_diag[pre, p, row, col] or one_three_incr_diag[pre, p, row, col] 
 
+    }
+}
 
-
+pred allowed[pre:Board, p:Player] {
+    some row, col:Int {
+         three_one_vertical[pre, p, row, col] or three_one_horizontal[pre, p, row, col] or three_one_decr_diag[pre, p, row, col] or three_one_incr_diag[pre, p, row, col]
     }
 }
 
@@ -294,15 +354,16 @@ pred TransitionStates{
         all b: Board | some b.next implies {
 
             //TESTS
-            b.position[6][3] = White
-            b.position[5][4] = White
-            b.position[4][5] = White
-            b.position[3][6] = White
-            not test_set_up[b]
+            not test_restrictions[b, White]
+            allowed[b, White]
+            //
 
-            //four in a row prior --> comlete the set
+            
             four_row_prior[b, White] implies complete_four_set[b, White]
             // four_row_prior[b, Black] and not four_row_prior[b, White] implies complete_four_set[b,Black]
+
+            //default case
+            not four_row_prior[b,White] implies randomly_place[b, White]
         }
     }
 }
