@@ -6,13 +6,8 @@ sig Board {
     // prev_player: lone Player
     
 }
-
-// one sig initBoard, finalBoard extends Board{}
-
 abstract sig Player {}
 one sig Black, White extends Player {}
-
-
 
 //Wellformed Board
 pred wellformed{
@@ -385,6 +380,9 @@ pred two_one_incr_diag_optimized[pre:Board, p:Player, row:Int, col:Int] {
 //_ + 3 --> horizontal, vertical, diagonal, diagonal
 
 pred three_horizontal[pre:Board, p:Player, row:Int, col:Int] {
+
+    // no pre.position[row][subtract[col,1]] or no pre.position[row][add[col,4]]
+
     no pre.position[row][col]
     pre.position[row][add[col,1]] = p
     pre.position[row][add[col,2]] = p  
@@ -392,6 +390,8 @@ pred three_horizontal[pre:Board, p:Player, row:Int, col:Int] {
 }
 
 pred three_vertical[pre:Board, p:Player, row:Int, col:Int] {
+    // no pre.position[subtract[row,1]][col] or no pre.position[add[row,4]][col]
+
     no pre.position[row][col]
     pre.position[add[row,1]][col] = p
     pre.position[add[row,2]][col] = p
@@ -892,14 +892,21 @@ pred TransitionStates{
 
         all b: Board | some b.next implies {
 
-            //TESTS
-            // not test_restrictions[b, White]
-            // allowed[b, White]
-            not four_row_prior[b,White]
-            not four_row_prior[b,Black]
-            three_row_prior[b,White]
+            #{row, col: Int | b.position[row][col] = Black} = #{row, col: Int | b.position[row][col] = White}
 
-            //four in a row prior --> comlete the set
+            //TESTS
+            // not four_row_prior[b,White]
+            // not four_row_prior[b,Black]
+            // not three_row_prior_optimized[b, White]
+            // not three_row_prior_optimized[b, Black]
+            // not three_row_prior[b, White]
+            // not three_row_prior[b,Black]
+            // two_row_prior_optimized[b, White]
+
+
+
+            //
+
             four_row_prior[b, White] implies complete_four_set[b]
             four_row_prior[b,Black] implies defend_four_set[b]
 
@@ -909,15 +916,16 @@ pred TransitionStates{
             three_row_prior[b, White] implies complete_three_set[b]
             three_row_prior[b,Black] implies defend_three_set[b]
 
-            two_row_prior_optimized[b, White] implies complete_three_set_optimized[b]
-            two_row_prior_optimized[b,Black] implies defend_three_set_optimized[b]
+            two_row_prior_optimized[b, White] implies complete_two_set_optimized[b]
+            two_row_prior_optimized[b,Black] implies defend_two_set_optimized[b]
 
             two_row_prior[b, White] implies complete_two_set[b]
             two_row_prior[b,Black] implies defend_two_set[b]
 
-
+            
+           
             //default case
-            // not four_row_prior[b,Black] implies randomly_place[b, White]
+            randomly_place[b, White]
         }
     }
 }
