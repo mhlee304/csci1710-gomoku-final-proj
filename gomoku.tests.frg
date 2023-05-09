@@ -453,6 +453,371 @@ test suite for four_incr_diagonal{
     }
 }
 
+test suite for two_twos_vertical{
+    example correct_two_twos_vertical is {some pre: Board, p: Player, row: Int, col: Int | two_twos_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 2 -> 1 -> `White0 
+        + 4-> 1 -> `White0  
+        + 5 -> 1 -> `White0)
+    }
+
+     example incorrect_two_twos_vertical is not {some pre: Board, p: Player, row: Int, col: Int | two_twos_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 2 -> 1 -> `White0 
+        + 3-> 1 -> `White0  
+        + 4 -> 1 -> `White0)
+    }
+}
+
+test suite for two_twos_horizontal{
+    example correct_two_twos_horizontal is {some pre: Board, p: Player, row: Int, col: Int | two_twos_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (5 -> 3 -> `White0 
+        + 5 -> 4 -> `White0 
+        + 5-> 6 -> `White0  
+        + 5 -> 7 -> `White0)
+    }
+
+     example incorrect_two_twos_horizontal is not {some pre: Board, p: Player, row: Int, col: Int | two_twos_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (6 -> 7 -> `White0 
+        + 6 -> 8 -> `White0 
+        + 6-> 9 -> `White0  
+        + 6 -> 10 -> `White0)
+    }
+}
+
+test suite for two_twos_incr_diag{
+     example correct_two_twos_incr is {some pre: Board, p: Player, row: Int, col: Int | two_twos_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (9 -> 1-> `White0 
+        + 8 -> 2 -> `White0 
+        + 6 -> 4->  `White0  
+        + 5 -> 5 -> `White0)
+    }
+
+     example incorrect_two_twos_incr is not {some pre: Board, p: Player, row: Int, col: Int | two_twos_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (6 -> 7 -> `White0 
+        + 6 -> 8 -> `White0 
+        + 6-> 9 -> `White0  
+        + 6 -> 10 -> `White0)
+    }
+}
+
+test suite for two_twos_decr_diag{
+     example correct_two_twos_decr is {some pre: Board, p: Player, row: Int, col: Int | two_twos_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (5 -> 3 -> `White0 
+        + 6 -> 4 -> `White0 
+        + 8-> 6 ->  `White0  
+        + 9 -> 7 -> `White0)
+    }
+
+     example incorrect_two_twos_decr is not {some pre: Board, p: Player, row: Int, col: Int | two_twos_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (6 -> 7 -> `White0 
+        + 6 -> 8 -> `White0 
+        + 6-> 9 -> `White0  
+        + 6 -> 10 -> `White0)
+    }
+}
+
+test suite for one_three_vertical{
+    example correct_one_three_vertical is {some pre: Board, p: Player, row: Int, col: Int | one_three_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 3 -> 1 -> `White0 
+        + 4-> 1 -> `White0  
+        + 5 -> 1 -> `White0)
+    }
+
+     example incorrect_one_three_vertical is not {some pre: Board, p: Player, row: Int, col: Int | one_three_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 2 -> 1 -> `White0 
+        + 3-> 1 -> `White0  
+        + 4 -> 1 -> `White0)
+    }
+}
+
+test suite for one_three_horizontal{
+    example correct_one_three_horizontal is {some pre: Board, p: Player, row: Int, col: Int | one_three_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 4 -> 3 -> `White0 
+        + 4-> 4 -> `White0  
+        + 4 -> 5 -> `White0)
+    }
+
+     example incorrect_one_three_horizontal is not {some pre: Board, p: Player, row: Int, col: Int | one_three_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (2 -> 1 -> `White0 
+        + 2 -> 2 -> `White0 
+        + 2-> 3 -> `White0  
+        + 2-> 4 -> `White0)
+    }
+}
+
+
+test suite for one_three_decr_diag{
+    example correct_one_three_decr_diag is {some pre: Board, p: Player, row: Int, col: Int | one_three_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 6-> 3 -> `White0 
+        + 7-> 4 -> `White0  
+        + 8 -> 5 -> `White0)
+    }
+
+     example incorrect_one_three_decr_diag is not {some pre: Board, p: Player, row: Int, col: Int | one_three_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 5 -> 2 -> `White0 
+        + 6 -> 3 -> `White0  
+        + 7-> 4 -> `White0)
+    }
+}
+
+test suite for one_three_incr_diag{
+    example correct_one_three_incr_diag is {some pre: Board, p: Player, row: Int, col: Int | one_three_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (6 -> 2 -> `White0 
+        +4  -> 4 -> `White0 
+        + 3 -> 5 -> `White0  
+        + 2 -> 6 -> `White0)
+    }
+
+     example incorrect_one_three_incr_diag is not {some pre: Board, p: Player, row: Int, col: Int | one_three_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 6-> 3 -> `White0 
+        + 7-> 4 -> `White0  
+        + 8 -> 5 -> `White0)
+    }
+}
+
+test suite for three_one_vertical{
+    example correct_three_one_vertical is {some pre: Board, p: Player, row: Int, col: Int | three_one_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 2 -> 1 -> `White0 
+        + 3-> 1 -> `White0  
+        + 5 -> 1 -> `White0)
+    }
+
+     example incorrect_three_one_vertical is not {some pre: Board, p: Player, row: Int, col: Int | three_one_vertical[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (1 -> 1 -> `White0 
+        + 2 -> 1 -> `White0 
+        + 3-> 1 -> `White0  
+        + 4 -> 1 -> `White0)
+    }
+}
+
+test suite for one_three_horizontal{
+    example correct_three_one_horizontal is {some pre: Board, p: Player, row: Int, col: Int | three_one_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 4 -> 2 -> `White0 
+        + 4-> 3 -> `White0  
+        + 4 -> 5-> `White0)
+    }
+
+     example incorrect_three_one_horizontal is not {some pre: Board, p: Player, row: Int, col: Int | three_one_horizontal[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (2 -> 1 -> `White0 
+        + 2 -> 2 -> `White0 
+        + 2-> 3 -> `White0  
+        + 2-> 4 -> `White0)
+    }
+}
+
+
+test suite for three_one_decr_diag{
+    example correct_three_one_decr_diag is {some pre: Board, p: Player, row: Int, col: Int | three_one_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (2-> 2 -> `White0 
+        + 3 -> 3 -> `White0 
+        + 4-> 4 -> `White0  
+        + 6 -> 6 -> `White0)
+    }
+
+     example incorrect_three_one_decr_diag is not {some pre: Board, p: Player, row: Int, col: Int | three_one_decr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 5 -> 2 -> `White0 
+        + 6 -> 3 -> `White0  
+        + 7-> 4 -> `White0)
+    }
+}
+
+test suite for three_one_incr_diag{
+    example correct_three_one_incr_diag is {some pre: Board, p: Player, row: Int, col: Int | three_one_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (9 -> 3-> `White0 
+        +8  -> 4 -> `White0 
+        + 7 -> 5 -> `White0  
+        + 5 -> 7 -> `White0)
+    }
+
+     example incorrect_three_one_incr_diag is not {some pre: Board, p: Player, row: Int, col: Int | three_one_incr_diag[pre, p, row, col]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 
+        position = 
+        `B0 -> 
+        (4 -> 1 -> `White0 
+        + 6-> 3 -> `White0 
+        + 7-> 4 -> `White0  
+        + 8 -> 5 -> `White0)
+    }
+}
+
+
+
+
 test suite for four_row_prior{
     example correct_four_row_prior is {some pre: Board, p: Player | four_row_prior[pre,p]} for {
         #Int = 5
@@ -506,7 +871,51 @@ test suite for prior_board{
 }
 
 test suite for complete_four_set{
-    example correct_complete_four_set is {some b: Board, p: Player | complete_four_set[b,p]} for {
+    // example correct_complete_four_set is {some b: Board, p: Player | complete_four_set[b,p]} for {
+    //     #Int = 5
+    //     Black = `Black0 
+    //     White = `White0 
+    //     Player = `Black0 + `White0
+    //     Board = `B0 + `B1 
+    //     next = `B0 -> `B1 
+    //     position = 
+    //     `B0 ->
+    //     (1 -> 1 -> `White0 +
+    //     0 -> 1 -> `Black0 + 
+    //     1 -> 2 -> `White0 +
+    //     3 -> 3 -> `Black0 +
+    //     1 -> 3 -> `White0 +
+    //     6 -> 7 -> `Black0 + 
+    //     1 -> 4 -> `White0 +
+    //     8 -> 8 -> `Black0) 
+    //     + 
+    //     `B1 -> 
+    //     (1 -> 1 -> `White0 +
+    //     0 -> 1 -> `Black0 + 
+    //     1 -> 2 -> `White0 +
+    //     3 -> 3 -> `Black0 +
+    //     1 -> 3 -> `White0 +
+    //     6 -> 7 -> `Black0 + 
+    //     1 -> 4 -> `White0 +
+    //     8 -> 8 -> `Black0 +
+    //     1 -> 5 -> `White0)
+    // }
+}
+
+test suite for randomly_place{
+    example correct_randomly_place is {some b: Board, p: Player | randomly_place[b, p]} for
+    {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 + `B1 
+        next = `B0 -> `B1 
+        position = `B0 -> (1 -> 1 -> `White0 + 1 -> 2 -> `Black0 + 1 -> 3 -> `White0 + 1 -> 7 -> `Black0 ) + `B1 -> (1 -> 1 -> `White0 + 1 -> 2 -> `Black0 + 1 -> 3 -> `White0 + 1 -> 7 -> `Black0 + 2 -> 3 -> `White0)
+    }
+
+    example incorrect_randomly_place is not {some b: Board, p: Player | randomly_place[b, p]} for
+    {
         #Int = 5
         Black = `Black0 
         White = `White0 
@@ -514,169 +923,43 @@ test suite for complete_four_set{
         Board = `B0 + `B1 
         next = `B0 -> `B1 
         position = 
-        `B0 ->
-        (1 -> 1 -> `White0 +
-        0 -> 1 -> `Black0 + 
-        1 -> 2 -> `White0 +
-        3 -> 3 -> `Black0 +
-        1 -> 3 -> `White0 +
-        6 -> 7 -> `Black0 + 
-        1 -> 4 -> `White0 +
-        8 -> 8 -> `Black0) 
-        + 
-
-        `B1 -> 
-        (1 -> 1 -> `White0 +
-        0 -> 1 -> `Black0 + 
-        1 -> 2 -> `White0 +
-        3 -> 3 -> `Black0 +
-        1 -> 3 -> `White0 +
-        6 -> 7 -> `Black0 + 
-        1 -> 4 -> `White0 +
-        8 -> 8 -> `Black0 +
-        1 -> 5 -> `White0)
+        `B0 -> (1 -> 1 -> `White0 + 1 -> 2 -> `Black0 + 1 -> 3 -> `White0 + 1 -> 7 -> `Black0 ) 
+        + `B1 -> (1 -> 1 -> `White0 + 1 -> 2 -> `Black0 + 1 -> 3 -> `White0 + 2 -> 7 -> `Black0 + 1 -> 7 -> `White0)
     }
 }
 
+test suite for allowed {
+    example correctly_allowed is {some pre:Board, p: Player | allowed[pre, p]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 + `B1 
+        next = `B0 -> `B1 
+        position = `B0 -> (1 -> 1 -> `White0 + 2 -> 1 -> `White0 + 3 -> 1 -> `White0 + 5 -> 1 ->`White0)
+    }
 
+    example not_correctly_allowed is {some pre:Board, p: Player | allowed[pre, p]} for {
+        #Int = 5
+        Black = `Black0 
+        White = `White0 
+        Player = `Black0 + `White0
+        Board = `B0 + `B1 
+        next = `B0 -> `B1 
+        position = `B0 -> (1 -> 1 -> `White0 + 2 -> 1 -> `White0 + 3 -> 1 -> `White0 + 5 -> 1 ->`White0)
+    }
+}
 
+test suite for TransitionStates {
+    // example correct_transition_state is TransitionStates for {
+    //     #Int = 5
+    //     Black = `Black0 
+    //     White = `White0 
+    //     Player = `Black0 + `White0
+    //     Board = `B0 + `B1 
+    //     next = `B0 -> `B1 
+    //     position = `B0 -> (1 -> 1 -> `White0 + 2 -> 1 -> `White0 + 3 -> 1 -> `White0 + 5 -> 1 ->`White0) + 
+    //     `B1 -> (1 -> 1 -> `White0 + 2 -> 1 -> `White0 + 3 -> 1 -> `White0 + 5 -> 1 ->`White0 + 4 -> 1 -> `White0)
 
-
-
-
-
-
-
-
-
-// test suite for four_in_a_row{
-
-// }
-
-// test suite for prior_board{
-
-// }
-
-// test suite for complete_four_set{
-
-// }
-
-// test suite for complete_four_set_defense{
-
-// }
-
-// test suite for radomly_playce{
-
-// }
-
-// test suite for allowed{
-
-// }
-
-
-// test suite for TransitionStates {
-//     // TODO: Write 1 example of a valid transition
-//     example validTransition is {some pre, post: State | canTransition[pre, post]} for {
-//         // State = `S0 + `S1 -- only two states for simplicity
-//         // Person = `A + `B + `C + `D
-//         // A = `A
-//         // B = `B
-//         // C = `C
-//         // D = `D    
-//         // Near = `Near
-//         // Far = `Far
-//         // Position = Near + Far
-//         // -- constrain <next>, <shore>, <torch>, and <spent>
-       
-//         // next = `S0 -> `S1
-
-//         // shore =
-//         //     `A -> `S0 -> `Near +
-//         //     `B -> `S0 -> `Near + 
-//         //     `C -> `S0 -> `Near +
-//         //     `D -> `S0 -> `Near +
-//         //     `A -> `S1 -> `Far +
-//         //     `B -> `S1 -> `Far + 
-//         //     `C -> `S1 -> `Near +
-//         //     `D -> `S1 -> `Near 
-        
-//         // torch = `S0 -> `Near + `S1 -> `Far
-
-//         // time = `A -> 1 + `B -> 2 + `C -> 5 + `D -> 3
-
-//         // spent = `S0 -> 3 + `S1 -> 5
-
-//         // #Int = 5
-
-//     }
-//     // TODO: Write 2 examples of a invalid transition (give them better names!)
-//     example invalidTransitionTakesFastestTime is not {some pre, post: State | canTransition[pre, post]} for {
-//         -- FILL ME IN!
-//         // State = `S0 + `S1 -- only two states for simplicity
-//         // Person = `A + `B + `C + `D
-//         // A = `A
-//         // B = `B
-//         // C = `C
-//         // D = `D    
-//         // Near = `Near
-//         // Far = `Far
-//         // Position = Near + Far
-//         // -- constrain <next>, <shore>, <torch>, and <spent>
-
-       
-//         // next = `S0 -> `S1
-
-//         // shore =
-//         //     `A -> `S0 -> `Near +
-//         //     `B -> `S0 -> `Near + 
-//         //     `C -> `S0 -> `Near +
-//         //     `D -> `S0 -> `Near +
-//         //     `A -> `S1 -> `Far +
-//         //     `B -> `S1 -> `Far + 
-//         //     `C -> `S1 -> `Near +
-//         //     `D -> `S1 -> `Near 
-        
-//         // torch = `S0 -> `Near + `S1 -> `Far
-
-//         // time = `A -> 1 + `B -> 2 + `C -> 5 + `D -> 3
-
-//         // spent = `S0 -> 3 + `S1 -> 4
-
-//         // #Int = 5
-//     }
-//     example invalidTransition2 is not {some pre, post: State | canTransition[pre, post]} for {
-//         -- FILL ME IN!
-//     //     State = `S0 + `S1 -- only two states for simplicity
-//     //     Person = `A + `B + `C + `D
-//     //     A = `A
-//     //     B = `B
-//     //     C = `C
-//     //     D = `D    
-//     //     Near = `Near
-//     //     Far = `Far
-//     //     Position = Near + Far
-//     //     -- constrain <next>, <shore>, <torch>, and <spent>
-
-       
-//     //     next = `S0 -> `S1
-
-//     //     shore =
-//     //         `A -> `S0 -> `Near +
-//     //         `B -> `S0 -> `Near + 
-//     //         `C -> `S0 -> `Near +
-//     //         `D -> `S0 -> `Near +
-//     //         `A -> `S1 -> `Far +
-//     //         `B -> `S1 -> `Far + 
-//     //         `C -> `S1 -> `Far +
-//     //         `D -> `S1 -> `Near 
-        
-//     //     torch = `S0 -> `Near + `S1 -> `Far
-
-//     //     time = `A -> 1 + `B -> 2 + `C -> 5 + `D -> 3
-
-//     //     spent = `S0 -> 3+ `S1 -> 8
-
-//     //     #Int = 5
-//     }
-//     // If you have tests for this predicate, put them here!
-// }
+    // }
+}
