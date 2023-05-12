@@ -901,7 +901,23 @@ pred TransitionStates{
             // not three_row_prior_optimized[b, Black]
             // not three_row_prior[b, White]
             // not three_row_prior[b,Black]
+            // not two_row_prior_optimized[b, White]
+            // not two_row_prior_optimized[b, Black]
+
+            // not two_row_prior[b, White]
+            // not two_row_prior[b,Black]
+
+            // four_row_prior[b,White]
+            // four_row_prior[b,Black]
+            // three_row_prior_optimized[b, White]
+            // three_row_prior_optimized[b, Black]
+            // three_row_prior[b, White]
+            // three_row_prior[b,Black]
             // two_row_prior_optimized[b, White]
+            // two_row_prior_optimized[b, Black]
+            // two_row_prior[b, White]
+            // two_row_prior[b,Black]
+
 
 
 
